@@ -1,10 +1,10 @@
 # makefiles
-Makefiles tutorials
+Makefiles tutorial
 ===============================================
 Makefile Syntax
 A Makefile consists of a set of rules. A rule generally looks like this:
 
-targets : prerequisites
+targets: prerequisites
    command
    command
    command
