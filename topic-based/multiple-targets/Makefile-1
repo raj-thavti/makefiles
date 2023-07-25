@@ -1,0 +1,12 @@
+all: hello-1.o hello-2.o hello-3.o
+
+hello-1-exe.o:hello-1.o
+	cc hello-1-exe hello-1.c
+hello-2.o:hello-2.c
+	cc -c hello-2.c -o hello-2.o
+hello-3.o:hello-3.c
+	cc -c hello-3.c -o hello-3.o
+
+clean:
+	rm -rf *.o
+

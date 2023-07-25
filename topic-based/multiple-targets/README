@@ -1,0 +1,32 @@
+ In many cases, one might want to generate more than one programs. For example, let program prog01 depend on a.c and b.c, prog02 depend on m.c and n.c, and prog03 depend on u.c, v.c and w.c. We want to generate all three of them with only one makefile. To do so, we can play a simple trick as follows:
+
+    all : prog01 prog02 prog03
+
+    prog01 : a.c b.c
+         gcc -o prog01 a.c b.c
+
+    prog02 : m.c n.c
+         gcc -o prog02 m.c n.c
+
+    prog03 : u.c v.c w.c
+         gcc -o prog03 u.c v.c w.c
+
+In addition to the dependency lines and command lines for generating prog01, prog02, and prog03, one more dependency line without a command line is added. It states that target all depends on prog01, prog02, and prog03. Thus, if one of these three programs is not up-to-date, all will be generated which in turn causes all programs compiled.
+
+With this makefile, you can issue the following command
+
+    $ make all
+
+telling make to process the target all, which in turn forces to process prog01, prog02, and prog03. In other words, the above command has a meaning like ``all is not up-to-date, so generate it ''.
+
+If the dependency line defining all is the first line of your Makefile, you can use the following:
+
+    $ make
+
+In this case, if the command line does not have a target name, the first target in the description file is made (together with all its prerequisites).
+
+The command line make all asks for processing all, which is a target. Similarly, one can ask make to process prog01, prog02, or prog03. For example, if we want to process the target prog02, then issue the following command:
+
+    $ make prog02
+
+

@@ -1,0 +1,56 @@
+Phony Targets
+
+A phony target is one that is not really the name of a file. It is just a name for some commands to be executed when you make an explicit request. There are two reasons to use a phony target: to avoid a conflict with a file of the same name, and to improve performance.
+
+If you write a rule whose commands will not create the target file, the commands will be executed every time the target comes up for remaking. Here is an example:
+
+clean:
+        rm *.o temp
+
+Because the rm command does not create a file named `clean', probably no such file will ever exist. Therefore, the rm command will be executed every time you say `make clean'.
+
+The phony target will cease to work if anything ever does create a file named `clean' in this directory. Since it has no dependencies, the file `clean' would inevitably be considered up to date, and its commands would not be executed. To avoid this problem, you can explicitly declare the target to be phony, using the special target .PHONY (see section Special Built-in Target Names) as follows:
+
+.PHONY : clean
+
+Once this is done, `make clean' will run the commands regardless of whether there is a file named `clean'.
+
+Since it knows that phony targets do not name actual files that could be remade from other files, make skips the implicit rule search for phony targets (see section Using Implicit Rules). This is why declaring a target phony is good for performance, even if you are not worried about the actual file existing.
+
+Thus, you first write the line that states that clean is a phony target, then you write the rule, like this:
+
+.PHONY: clean
+clean:
+        rm *.o temp
+
+A phony target should not be a dependency of a real target file; if it is, its commands are run every time make goes to update that file. As long as a phony target is never a dependency of a real target, the phony target commands will be executed only when the phony target is a specified goal (see section Arguments to Specify the Goals).
+
+Phony targets can have dependencies. When one directory contains multiple programs, it is most convenient to describe all of the programs in one makefile `./Makefile'. Since the target remade by default will be the first one in the makefile, it is common to make this a phony target named `all' and give it, as dependencies, all the individual programs. For example:
+
+all : prog1 prog2 prog3
+.PHONY : all
+
+prog1 : prog1.o utils.o
+        cc -o prog1 prog1.o utils.o
+
+prog2 : prog2.o
+        cc -o prog2 prog2.o
+
+prog3 : prog3.o sort.o utils.o
+        cc -o prog3 prog3.o sort.o utils.o
+
+Now you can say just `make' to remake all three programs, or specify as arguments the ones to remake (as in `make prog1 prog3').
+
+When one phony target is a dependency of another, it serves as a subroutine of the other. For example, here `make cleanall' will delete the object files, the difference files, and the file `program':
+
+.PHONY: cleanall cleanobj cleandiff
+
+cleanall : cleanobj cleandiff
+        rm program
+
+cleanobj :
+        rm *.o
+
+cleandiff :
+        rm *.diff
+
