@@ -1,2 +1,2 @@
 sample: sample.o
-	cc -c sample.c -o sample.o
+	cc sample.c -o sample.o
