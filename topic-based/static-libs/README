@@ -114,23 +114,23 @@ $ gcc -static -o mathdemo mathdemo.o libmymath.a
 
 Alternately, you can specify the library path along with the library name:
 
-$ gcc -static -o mathDemo -L . mathDemo.o -lmymath
+$ gcc -static -o mathdemo -L . mathdemo.o -lmymath
 
 In the latter example, the -lmymath option tells the linker to link the object files present in the libmymath.a with the object file mathDemo.o to create the final executable. The -L option directs the linker to look for libraries in the following argument (similar to what you would do with -I).
 Analyzing the result
 
 Confirm that it's statically linked using the file command:
 
-$ file mathDemo
+$ file mathdemo
 mathDemo: ELF 64-bit LSB executable, x86-64...
 statically linked, with debug_info, not stripped
 
 Using the ldd command, you can see that the executable is not dynamically linked:
 
-$ ldd ./mathDemo
+$ ldd ./mathdemo
         not a dynamic executable
 
 You can also check the size of the mathDemo executable:
 
-$ du -h ./mathDemo
-932K    ./mathDemo
+$ du -h ./mathdemo
+932K    ./mathdemo
