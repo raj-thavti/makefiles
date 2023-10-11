@@ -1,7 +1,6 @@
 
 How dynamic linking for modular libraries works on Linux
-Learn how to combine multiple C object files into single executable with dynamic libraries.
-
+Learn how to combine multiple C object files into a single executable with dynamic libraries.
 
 
 When you write an application using the C programming language, your code usually has multiple source files.
@@ -56,22 +55,10 @@ return (a/b);
 
 Now generate object files add.o, sub.o, mult.o, and divi.o using GCC:
 
-$ gcc -c add.c sub.c mult.c divi.c
+$ gcc -c add.c sub.c mult.c div.c
 
 The -c option skips the linking step and creates only object files.
 
-Skip to content
-Skip to bottom of list
-Programming and development
-Red Hat Developers Blog
-Programming cheat sheets
-Try for free: Red Hat Learning Subscription
-eBook: An introduction to programming with Bash
-Bash shell scripting cheat sheet
-eBook: Modernizing Enterprise Java
-An open source developer's guide to building applications
-Register for your free Red Hat account
-Creating a shared object file
 
 Dynamic libraries are linked during the execution of the final executable. Only the name of the dynamic library is placed in the final executable. The actual linking happens during runtime, when both executable and library are placed in the main memory.
 
@@ -79,18 +66,18 @@ In addition to being sharable, another advantage of a dynamic library is that it
 
 You can create dynamic libraries from your existing sample code:
 
-$ gcc -Wall -fPIC -c add.c sub.c mult.c divi.c
+$ gcc -Wall -fPIC -c add.c sub.c mult.c div.c
 
 The option -fPIC tells GCC to generate position-independent code (PIC). The -Wall option isn't necessary and has nothing to do with how the code is compiling. Still, it's a valuable option because it enables compiler warnings, which can be helpful when troubleshooting.
 
 Using GCC, create the shared library libmymath.so:
 
 $ gcc -shared -o libmymath.so \
-add.o sub.o mult.o divi.o
+add.o sub.o mult.o div.o
 
 You have now created a simple example math library, libmymath.so, which you can use in C code. There are, of course, very complex C libraries out there, and this is the process their developers use to generate the final product that you or I install for use in C code.
 
-Next, you can use your new math library in some custom code, then link it.
+Next, you can use your new math library in some custom code, and then link it.
 Creating a dynamically linked executable
 
 Suppose you've written a command for mathematics. Create a file called mathDemo.c and paste this code into it:
@@ -142,6 +129,8 @@ $ ldd mathDemo
     libmymath.so => /usr/lib64/libmymath.so (0x00007fe4d4d33000)
     libc.so.6 => /lib64/libc.so.6 (0x00007fe4d4b29000)
     /lib64/ld-linux-x86-64.so.2 (0x00007fe4d4d4e000)
+
+In case if libmymath.so is not found with abouve command , pls copy it to /usr/lib/ 
 
 Take a look at the size of the mathDemo executable:
 
