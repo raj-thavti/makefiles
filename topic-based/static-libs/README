@@ -55,15 +55,15 @@ int divi(int a, int b){
 return (a/b);
 }
 
-Now generate object files add.o, sub.o, mult.o, and divi.o using GCC:
+Now generate object files add.o, sub.o, mult.o, and div.o using GCC:
 
-$ gcc -c add.c sub.c mult.c divi.c
+$ gcc -c add.c sub.c mult.c div.c
 
 The -c option skips the linking step and creates only object files.
 
 Create a static library called libmymath.a, then remove the object files, as they're no longer required. (Note that using a trash command is safer than rm.)
 
-$ ar rs libmymath.a add.o sub.o mult.o divi.o
+$ ar rs libmymath.a add.o sub.o mult.o div.o
 $ trash *.o
 $ ls
 add.c  divi.c  libmymath.a  mult.c  mymath.h  sub.c
@@ -100,9 +100,9 @@ int main()
 
 Notice that the first line is an include statement referencing, by name, your own libmymath library.
 
-Create an object file called mathDemo.o for mathDemo.c:
+Create an object file called mathdemo.o for mathdemo.c:
 
-$ gcc -I . -c mathDemo.c
+$ gcc -I . -c mathdemo.c
 
 The -I option tells GCC to search for header files listed after it. In this case, you're specifying the current directory, represented by a single dot (.).
 
@@ -110,7 +110,7 @@ Link mathDemo.o with libmymath.a to create the final executable. There are two w
 
 You can point to the files:
 
-$ gcc -static -o mathDemo mathDemo.o libmymath.a
+$ gcc -static -o mathdemo mathdemo.o libmymath.a
 
 Alternately, you can specify the library path along with the library name:
 
